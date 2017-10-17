@@ -1,5 +1,5 @@
 import quandl, math, datetime 
-import pandas as pd
+#import pandas as pd
 import numpy as np
 from sklearn import preprocessing, cross_validation,svm
 from sklearn.linear_model import LinearRegression
