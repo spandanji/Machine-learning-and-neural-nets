@@ -1,17 +1,19 @@
+#!/usr/bin/python3
+
 #import the libraries
+
 import stocks as st
 
-quandlKey = 'KyDThnJDLaoE4Nk2xtoV'
-st.assignQuandlKey(quandlKey)
+# quandlKey = 'KyDThnJDLaoE4Nk2xtoV'
+# st.assignQuandlKey(quandlKey)
 
-df,pctDataOut= st.retrieve('WIKI/CCE'),0.005
-
+df, pctDataOut = st.retrieve('WIKI/CCE'), 0.005
 #df,pctDataOut== st.retrieve('WIKI/TCS'),0.01
 #df,pctDataOut== st.retrieve('WIKI/GOOGL'),0.01
 #df,pctDataOut== st.retrieve('WIKI/MSFT'),0.01
 
 df = st.featureSelect(df)
-forecast_out,df = st.labelGen(df,train_out=pctDataOut)
+forecast_out, df = st.labelGen( df, train_out=pctDataOut )
 print(df.head())
 
 X,y,X_train,y_train,X_test,y_test,X_lately = st.matrixGen(df,forecast_out)
@@ -19,8 +21,6 @@ forecast_set,accuracy = st.trainAndTestLinear(X_train,y_train,X_test,y_test,X_la
 
 df = st.forecastAdd(df,forecast_set)
 st.plotThem(df,forecast_out,accuracy)
-
-
 '''
 Control the plot
 

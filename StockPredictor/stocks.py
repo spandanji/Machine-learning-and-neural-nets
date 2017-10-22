@@ -1,7 +1,7 @@
 import quandl, math, datetime 
 #import pandas as pd
 import numpy as np
-from sklearn import preprocessing, cross_validation,svm
+from sklearn import preprocessing, cross_validation
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from matplotlib import style
