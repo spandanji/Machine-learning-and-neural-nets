@@ -69,7 +69,7 @@ def plotThem(df,forecast_out,accuracy):
     plt.legend(loc=4)
     plt.title(str(forecast_out)+ "days into the future..(Accuracy="+str(accuracy*100)+"%)")
     plt.xlabel('Date')
-    plt.ylabel('Predict Close price')
+    plt.ylabel('Adjusted Close price')
     plt.show()
 
 

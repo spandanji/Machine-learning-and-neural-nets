@@ -1,16 +1,9 @@
 #!/usr/bin/python3
-
-#import the libraries
-
 import stocks as st
 
 # quandlKey = 'KyDThnJDLaoE4Nk2xtoV'
 # st.assignQuandlKey(quandlKey)
-
-df, pctDataOut = st.retrieve('WIKI/CCE'), 0.005
-#df,pctDataOut== st.retrieve('WIKI/TCS'),0.01
-#df,pctDataOut== st.retrieve('WIKI/GOOGL'),0.01
-#df,pctDataOut== st.retrieve('WIKI/MSFT'),0.01
+df, pctDataOut = st.retrieve('WIKI/TCS'), 0.005
 
 df = st.featureSelect(df)
 forecast_out, df = st.labelGen( df, train_out=pctDataOut )

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#The GUI
 import sys
 from PyQt4 import QtGui, QtCore
 import stocks as st
@@ -153,82 +154,85 @@ class Window(QtGui.QMainWindow):
 		self.toolbar.addAction(HyattStock)
 
 	def Hayatt(self):
-		df,pctDataOut = st.retrieve('WIKI/H'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/H',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def pep(self):
-		df,pctDataOut = st.retrieve('WIKI/PEP'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/PEP',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 		# self.show()
 	def coke(self):
-		df,pctDataOut = st.retrieve('WIKI/CCE'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/CCE',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def Ti(self):
-		df,pctDataOut = st.retrieve('WIKI/TXN'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/TXN',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def COG(self):
-		df,pctDataOut = st.retrieve('WIKI/CTSH'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/CTSH',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def TCS(self):
-		df,pctDataOut = st.retrieve('WIKI/TCS'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/TCS',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def Ati(self):
-		df,pctDataOut = st.retrieve('WIKI/ATI'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/ATI',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 
 
 	def Quallacomm(self):
-		df,pctDataOut = st.retrieve('WIKI/QCOM'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/QCOM',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 
 	def Nvidia(self):
 		
 
-		#df,pctDataOut = st.retrieve('WIKI/AAPL'),0.005
-		df,pctDataOut = st.retrieve('WIKI/NVDA'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		#df_link,pctDataOut = 'WIKI/AAPL',0.005
+		df_link,pctDataOut = 'WIKI/NVDA',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def Apple(self):
-		#df,pctDataOut = st.retrieve('WIKI/AAPL'),0.005
-		df,pctDataOut = st.retrieve('WIKI/AAPL'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		#df_link,pctDataOut = 'WIKI/AAPL',0.005
+		df_link,pctDataOut = 'WIKI/AAPL',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 	
 
 	def Yahoo(self):
-		df,pctDataOut = st.retrieve('WIKI/YHOO'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/YHOO',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def Microsoft(self):
 		
-		df,pctDataOut = st.retrieve('WIKI/MSFT'),self.readPCTout()
-		self.processData(df,pctDataOut)
+		df_link,pctDataOut = 'WIKI/MSFT',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def Google(self):
+		df_link, pctDataOut = 'WIKI/GOOGL',self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
-		
-		#df, pctDataOut = st.retrieve('WIKI/CCE'), 0.005
+	def processData(self,df_link,pctDataOut):
+		choice  = QtGui.QMessageBox.question(self, 'Listen up!',
+											"Data is going to be downloaded from the internet. \n Make sure you have a working internet connection \n Continue? ",
+											QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+		if choice ==QtGui.QMessageBox.Yes:
+			df = st.retrieve(df_link)
+			df = st.featureSelect(df)
+			forecast_out, df = st.labelGen( df, train_out=pctDataOut )
+			print(df.head())
 
-		#df,pctDataOut = st.retrieve('WIKI/TCS'),0.01
-		df, pctDataOut = st.retrieve('WIKI/GOOGL'),self.readPCTout()
-		self.processData(df,pctDataOut)
+			X,y,X_train,y_train,X_test,y_test,X_lately = st.matrixGen(df,forecast_out)
+			forecast_set,accuracy = st.trainAndTestLinear(X_train,y_train,X_test,y_test,X_lately) 
 
-	def processData(self,df,pctDataOut):
-		df = st.featureSelect(df)
-		forecast_out, df = st.labelGen( df, train_out=pctDataOut )
-		print(df.head())
+			df = st.forecastAdd(df,forecast_set)
+			st.plotThem(df,forecast_out,accuracy)
 
-		X,y,X_train,y_train,X_test,y_test,X_lately = st.matrixGen(df,forecast_out)
-		forecast_set,accuracy = st.trainAndTestLinear(X_train,y_train,X_test,y_test,X_lately) 
-
-		df = st.forecastAdd(df,forecast_set)
-		st.plotThem(df,forecast_out,accuracy)
+		else:
+			pass
 
 	def ticker(self):
 		text, ok = QtGui.QInputDialog.getText(self, 'Enter a Quandl ticker', 'Ticker:')
