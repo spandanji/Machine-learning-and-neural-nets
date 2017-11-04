@@ -237,8 +237,8 @@ class Window(QtGui.QMainWindow):
 	def ticker(self):
 		text, ok = QtGui.QInputDialog.getText(self, 'Enter a Quandl ticker', 'Ticker:')
 		if ok:
-			df,pctDataOut = st.retrieve(text),0.01
-			self.processData(df,pctDataOut)
+			df_link,pctDataOut = text,self.readPCTout()
+		self.processData(df_link,pctDataOut)
 
 	def readPCTout(self):
 		file = open('pctout.txt', "r")
